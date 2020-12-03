@@ -17,24 +17,25 @@ const removeTmp = (path) => {
 module.exports = {
     uploadImage: async (req, res) => {
         try {
-            const user = await User.findById(req.user.id);
+            const user = await User.findById(req.user._id);
             if (!user) return res.status(400).json("El usuario no existe");
-            const { folder } = req.params;
+            const { folder } = req.body;
             if (folder !== "users" && user.role === "user")
                 return res
                     .status(403)
                     .json({ error: "No puede acceder a este contenido" });
             if (!req.files || Object.keys(req.files).length === 0)
-                return res
-                    .status(400)
-                    .json({ error: "No hay archivos para cargar" });
+                return res.status(400).json({
+                    error: "No ha cargado ningun archivo",
+                });
 
             const file = req.files.file;
             if (file.size > 1024 * 1024) {
                 removeTmp(file.tempFilePath);
-                return res
-                    .status(400)
-                    .json({ error: "Tamaño demaciado grande" });
+                return res.status(400).json({
+                    error:
+                        "El tamaño de la imagen es demaciado grande, solo se admiten del tamaño de 1mb",
+                });
             }
             if (
                 file.mimetype !== "image/jpeg" &&
@@ -43,7 +44,7 @@ module.exports = {
                 removeTmp(file.tempFilePath);
                 return res
                     .status(400)
-                    .json({ error: "El formato del archivo es incorrecto" });
+                    .json({ error: "El formato de la imagen es incorrecto" });
             }
 
             cloudinary.v2.uploader.upload(
@@ -56,12 +57,12 @@ module.exports = {
                 }
             );
         } catch (error) {
-            return res.status(404).json({ error });
+            return res.status(404).json({ error: error.message });
         }
     },
     deleteImage: async (req, res) => {
         try {
-            const user = await User.findById(req.user.id);
+            const user = await User.findById(req.user._id);
             if (!user) return res.status(400).json("El usuario no existe");
             const { public_id } = req.body;
             if (!public_id)
