@@ -7,7 +7,7 @@ const userSchema = new Schema({
     password: {
         type: String, required: true
     },
-    rol: { type: String, default: 'user', enum: { values: ['user', 'admin'] } },
+    role: { type: String, default: 'user', enum: { values: ['user', 'admin'] } },
     state: { type: Boolean, default: true },
     images: { type: Object },
     cart: { type: Array, default: [] }

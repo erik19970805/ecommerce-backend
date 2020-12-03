@@ -1,41 +1,26 @@
-const passport = require('passport');
-const User = require('../models/User');
+const passport = require("passport");
+const User = require("../models/User");
 
 module.exports = {
-    user: (req, res, next) => {
-        passport.authenticate('jwt', { session: false }, async (err, id) => {
-            if (err || !id) return res.json({ error: 'Debe iniciar sesiòn' });
-            const user = await User.findById(id, { password: 0 });
-            if (!user) return res.json({ error: 'El usuario no existe' });
-            const { rol, state } = user;
-            if (!state) return res.json({ error: 'El usuario no existe' });
-            if (rol !== 'user') return res.json({ error: 'No puede acceder a este contenido' });
+    auth: (req, res, next) => {
+        passport.authenticate("jwt", { session: false }, async (err, user) => {
+            if (err)
+                return res
+                    .status(400)
+                    .json({ error: "Su autentificacion es invalida" });
             req.user = user;
             next();
-        })(req, res)
+        })(req, res);
     },
-    admin: (req, res, next) => {
-        passport.authenticate('jwt', { session: false }, async (err, id) => {
-            if (err || !id) return res.json({ error: 'Debe iniciar sesiòn' });
-            const user = await User.findById(id, { password: 0 });
-            if (!user) return res.json({ error: 'El usuario no existe' });
-            const { rol, state } = user;
-            if (!state) return res.json({ error: 'El usuario no existe' });
-            if (rol !== 'admin') return res.json({ error: 'No puede acceder a este contenido' });
-            req.user = user;
+    authAdmin: async (req, res, next) => {
+        try {
+            if (req.user.role !== "admin")
+                return res.status(400).json({
+                    error: "Usted no puede acceder a este contenido",
+                });
             next();
-        })(req, res)
+        } catch (error) {
+            return res.status(500).json({ error: error.message });
+        }
     },
-    both: (req, res, next) => {
-        passport.authenticate('jwt', { session: false }, async (err, id) => {
-            if (err || !id) return res.json({ error: 'Debe iniciar sesiòn' });
-            const user = await User.findById(id, { password: 0 });
-            if (!user) return res.json({ error: 'El usuario no existe' });
-            const { rol, state } = user;
-            if (!state) return res.json({ error: 'El usuario no existe' });
-            if (rol !== 'admin' && rol !== 'user') return res.json({ error: 'No puede acceder a este contenido' });
-            req.user = user;
-            next();
-        })(req, res)
-    }
-}
+};

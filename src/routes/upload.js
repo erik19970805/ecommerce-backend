@@ -1,9 +1,7 @@
-const router = require('express').Router();
-const { both } = require('../middlewares/authentication');
-const { uploadImage, deleteImage } = require('../controllers/upload');
+const router = require("express").Router();
+const { auth, authAdmin } = require("../middlewares/authentication");
+const { uploadImage, deleteImage } = require("../controllers/upload");
 
-router
-    .post('/', both, uploadImage)
-    .post('/destroy', both, deleteImage);
+router.post("/:folder", auth, uploadImage).post("/destroy", auth, deleteImage);
 
 module.exports = router;

@@ -1,15 +1,18 @@
-const router = require('express').Router();
-const { admin } = require('../middlewares/authentication');
-const { getProducts, getProductsByCategory, getProduct, createProduct, updateProduct, deleteProduct } = require('../controllers/product');
+const router = require("express").Router();
+const { auth, authAdmin } = require("../middlewares/authentication");
+const {
+    getProducts,
+    getProduct,
+    createProduct,
+    updateProduct,
+    deleteProduct,
+} = require("../controllers/product");
 
-router.route('/:id')
-    .get(getProduct)
-    .put(admin, updateProduct)
-    .delete(admin, deleteProduct);
-
+router.get("/", getProducts).post("/", auth, authAdmin, createProduct);
 router
-    .get('/', getProducts)
-    .get('/bycategory/:category', getProductsByCategory)
-    .post('/', admin, createProduct);
+    .route("/:id")
+    .get(getProduct)
+    .put(auth, authAdmin, updateProduct)
+    .delete(auth, authAdmin, deleteProduct);
 
 module.exports = router;
