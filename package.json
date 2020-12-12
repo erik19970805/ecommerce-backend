@@ -21,13 +21,14 @@
   },
   "devDependencies": {},
   "scripts": {
-    "start": "node src/index",
+    "start": "NODE_ENV=production node src/index",
     "server": "nodemon src/index",
     "client": "cd ../frontend && npm run start",
     "server-install": "npm install",
     "client-install": "cd ../frontend && npm install",
     "install-all": "concurrently \"npm run server-install\" \"npm run client-install\"",
-    "dev": "concurrently \"npm run server\" \"npm run client\""
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "build-client": "cd ../frontend && npm run build && mv build ../backend/src/"
   },
   "keywords": [],
   "author": "",
