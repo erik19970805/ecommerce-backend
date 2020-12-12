@@ -23,14 +23,14 @@ app.use(fileUpload({ useTempFiles: true }));
 require("./middlewares/passport");
 
 // routes
-app.use("/auth", require("./routes/auth"));
-app.use("/user", auth, authAdmin, require("./routes/user"));
-app.use("/upload", require("./routes/upload"));
-app.use("/category", require("./routes/category"));
-app.use("/products", require("./routes/product"));
-app.use("/cart", require("./routes/cart"));
-app.use("/payment", require("./routes/payment"));
-app.use("/history", require("./routes/history"));
+app.use("/api/auth", require("./routes/auth"));
+app.use("/api/user", auth, authAdmin, require("./routes/user"));
+app.use("/api/upload", require("./routes/upload"));
+app.use("/api/category", require("./routes/category"));
+app.use("/api/products", require("./routes/product"));
+app.use("/api/cart", require("./routes/cart"));
+app.use("/api/payment", require("./routes/payment"));
+app.use("/api/history", require("./routes/history"));
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.join(__dirname, "build")));
