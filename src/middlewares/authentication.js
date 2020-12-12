@@ -6,7 +6,10 @@ module.exports = {
       if (err || !user)
         return res
           .status(400)
-          .json({ error: "Su autentificacion es invalida", isLogged: false });
+          .json({
+            error: "Su seccion a expirado vuelva a logearse",
+            isLogged: false,
+          });
       req.user = user;
       next();
     })(req, res);
