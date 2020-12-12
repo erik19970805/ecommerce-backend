@@ -20,8 +20,14 @@
   },
   "devDependencies": {},
   "scripts": {
-    "dev": "nodemon src/index",
-    "start": "node src/index"
+    "start": "node src/index",
+    "server": "nodemon src/index",
+    "cliente": "cd ../frontent && npm run start",
+    "server-install": "npm install",
+    "client-install": "cd ../frontend && npm install",
+    "install-all": "concurrently \"npm run server-install\" \"npm run client-install\"",
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "heroku-postbuild": "cd ../frontend && npm install && npm run build"
   },
   "keywords": [],
   "author": "",
