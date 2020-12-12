@@ -24,7 +24,7 @@ require("./middlewares/passport");
 
 // routes
 app.use("/auth", require("./routes/auth"));
-app.use("/users", auth, authAdmin, require("./routes/user"));
+app.use("/user", auth, authAdmin, require("./routes/user"));
 app.use("/upload", require("./routes/upload"));
 app.use("/category", require("./routes/category"));
 app.use("/products", require("./routes/product"));

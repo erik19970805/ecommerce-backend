@@ -6,7 +6,7 @@ const {
     updateUser,
     deleteUser,
 } = require("../controllers/user");
-const { user } = require("../middlewares/authentication");
+
 
 router.route("/:id").get(getUser).put(updateUser).delete(deleteUser);
 
